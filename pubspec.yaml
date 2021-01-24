@@ -1,6 +1,6 @@
 name: clickable
 description: Clickable components with cascading parameters for report
-version: 0.0.2-dev
+version: 0.0.3
 homepage: https://github.com/songfei/flutter_clickable
 
 environment:

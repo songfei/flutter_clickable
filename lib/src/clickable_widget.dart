@@ -1,1 +1,1 @@
-export 'clickable_debug_widget.dart';
+export 'clickable_normal_widget.dart';

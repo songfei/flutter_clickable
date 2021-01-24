@@ -53,11 +53,14 @@ class MyApp extends StatelessWidget {
                               duration: Duration(seconds: 1),
                             ));
                           },
-                          builder: (BuildContext context, bool isHighlight) {
-                            return Text(
-                              'You can click \nthis text',
-                              style: TextStyle(color: isHighlight ? Colors.red : Colors.black),
-                              textAlign: TextAlign.center,
+                          builder: (BuildContext context, bool isHighlight, bool isHover) {
+                            return Container(
+                              color: isHover ? Colors.blue : null,
+                              child: Text(
+                                'You can click \nthis text',
+                                style: TextStyle(color: isHighlight ? Colors.red : Colors.black),
+                                textAlign: TextAlign.center,
+                              ),
                             );
                           },
                         );

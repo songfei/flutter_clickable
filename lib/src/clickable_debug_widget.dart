@@ -8,7 +8,7 @@ import 'report_parameter_widget.dart';
 
 Logger _log = Logger('Clickable');
 
-typedef ClickableBuilder = Widget Function(BuildContext context, bool isHighlight);
+typedef ClickableBuilder = Widget Function(BuildContext context, bool isHighlight, bool isHover);
 
 class ClickableWidget extends StatelessWidget {
   ClickableWidget({

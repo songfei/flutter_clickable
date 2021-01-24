@@ -1,8 +1,10 @@
 import 'package:clickable/clickable.dart';
 import 'package:clickable/src/clickable_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-typedef ClickableBuilder = Widget Function(BuildContext context, bool isHighlight);
+typedef ClickableBuilder = Widget Function(BuildContext context, bool isHighlight, bool isHover);
 
 class ClickableWidget extends StatefulWidget {
   ClickableWidget({
@@ -38,6 +40,7 @@ class _ClickableWidgetState extends State<ClickableWidget> {
   bool _isTouchDown = false;
   bool _isHighlighting = false;
   bool _isHighlighted = false;
+  bool _isHover = false;
 
   @override
   void initState() {
@@ -73,7 +76,7 @@ class _ClickableWidgetState extends State<ClickableWidget> {
       };
     }
 
-    return GestureDetector(
+    Widget child = GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTapCallback,
       onDoubleTap: onDoubleTapCallback,
@@ -92,8 +95,26 @@ class _ClickableWidgetState extends State<ClickableWidget> {
         cancelHighlight();
       },
       onTapCancel: cancelHighlight,
-      child: widget.builder(context, _isHighlighted),
+      child: widget.builder(context, _isHighlighted, _isHover),
     );
+
+    if (kIsWeb) {
+      return MouseRegion(
+        onEnter: (event) {
+          setState(() {
+            _isHover = true;
+          });
+        },
+        onExit: (event) {
+          setState(() {
+            _isHover = false;
+          });
+        },
+        cursor: SystemMouseCursors.click,
+        child: child,
+      );
+    }
+    return child;
   }
 
   void highlight() {
