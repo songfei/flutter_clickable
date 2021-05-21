@@ -293,20 +293,7 @@ class ReportInfoWidget extends StatelessWidget {
                             SizedBox(
                               width: 10.0,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                ClickableNameManager().shareFile();
-                              },
-                              child: Text(
-                                '[导出]',
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.normal,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                            ),
+                            ClickableNameManager().exportFileWidget(),
                           ],
                         ),
                         uuid == null
