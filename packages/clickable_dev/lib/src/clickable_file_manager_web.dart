@@ -80,7 +80,7 @@ class ClickableFileManager {
     ui.platformViewRegistry.registerViewFactory('export_file_html_$uid', (int viewId) {
       html.AnchorElement element = html.AnchorElement();
       element.href = filePath;
-      element.innerText = '[下载]';
+      element.innerText = '[导出]';
       element.download = 'report.json';
 
       element.style.color = "#4CAF50";
