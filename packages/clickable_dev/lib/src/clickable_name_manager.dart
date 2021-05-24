@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share/share.dart';
+
+import 'clickable_file_manager.dart'
+    if (dart.library.io) 'clickable_file_manager.dart' // dart:io implementation
+    if (dart.library.html) 'clickable_file_manager_web.dart'; // dart:html implementation
 
 final _log = Logger('ClickableNameManager');
 
@@ -26,10 +27,8 @@ class ClickableNameManager {
 
   Stream<bool> get clickableNameChangedListener => _updateStreamController.stream;
 
-  Future<String> _filePath() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String filePath = appDocDir.path + '/report.json';
-    return filePath;
+  String get filePath {
+    return '';
   }
 
   void dispose() {
@@ -37,28 +36,12 @@ class ClickableNameManager {
   }
 
   Future<void> loadFile() async {
-    String filePath = await _filePath();
-    _log.info('load report file: $filePath');
-
-    File file = File(filePath);
-    if (await file.exists()) {
-      String fileContent = await file.readAsString();
-      nameMap = json.decode(fileContent);
-    }
+    nameMap = await ClickableFileManager().loadFile();
     _updateStreamController.add(true);
   }
 
   Future<void> saveFile() async {
-    String filePath = await _filePath();
-
-    File file = File(filePath);
-    var encoder = JsonEncoder.withIndent("    ");
-    file.writeAsStringSync(encoder.convert(nameMap));
-  }
-
-  Future<void> shareFile() async {
-    String filePath = await _filePath();
-    Share.shareFiles([filePath]);
+    await ClickableFileManager().saveFile(nameMap);
   }
 
   Future<void> addName(String uuid, String name, String comment) async {
@@ -68,10 +51,14 @@ class ClickableNameManager {
     };
 
     _updateStreamController.add(true);
-    await saveFile();
+    await ClickableFileManager().saveFile(nameMap);
   }
 
   dynamic getName(String uuid) {
     return nameMap[uuid];
+  }
+
+  Widget exportFileWidget() {
+    return ClickableFileManager().exportFileWidget();
   }
 }
